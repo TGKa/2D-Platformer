@@ -26,16 +26,16 @@ public class Movement : MonoBehaviour
     private void Update()
     {
         if (Input.GetKey(KeyCode.A))
-        {
             Run(-_speed, true);
-        }
 
-            if (Input.GetKey(KeyCode.D))
-        {
+        if (Input.GetKey(KeyCode.D))
             Run(_speed, false);
-        }
 
-        Jump();
+        if (Input.GetKeyDown(KeyCode.Space) && _isGround)
+            Jump();
+
+        if (Input.GetKeyUp(KeyCode.A) && Input.GetKey(KeyCode.D))
+            StopAnimationRun();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -55,18 +55,15 @@ public class Movement : MonoBehaviour
 
     public void PlayAnimationHit()
     {
-        _animator.SetBool("Run", false);
+        StopAnimationRun();
         _animator.SetTrigger("Hit");
     }
 
     private void Jump()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && _isGround)
-        {
-            _animator.SetBool("Run", false);
+            StopAnimationRun();
             _animator.SetTrigger("Jump");
             _rigidbody2D.AddForce(transform.up * _jumpForse, ForceMode2D.Impulse);
-        }
     }
 
     private void Run(float speed, bool isRotatedAnimation = false)
@@ -82,5 +79,10 @@ public class Movement : MonoBehaviour
             transform.Translate(speed * Time.deltaTime, 0, 0);
             _spriteRenderer.flipX = isRotatedAnimation;
         }
+    }
+
+    private void StopAnimationRun()
+    {
+        _animator.SetBool("Run", false);
     }
 }
