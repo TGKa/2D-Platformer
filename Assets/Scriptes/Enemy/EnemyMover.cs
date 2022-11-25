@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
+[RequireComponent(typeof(Animator))]
 public class EnemyMover : MonoBehaviour
 {
     [SerializeField] private Transform _path;
@@ -41,10 +42,5 @@ public class EnemyMover : MonoBehaviour
             if (_currentPoint >= _points.Count)
                 _currentPoint = 0;
         }
-    }
-
-    public void PlayAnimationHit()
-    {
-        _animator.SetTrigger("Hit");
     }
 }

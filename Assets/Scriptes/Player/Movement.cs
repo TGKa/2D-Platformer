@@ -4,10 +4,15 @@ using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(SpriteRenderer))]
 public class Movement : MonoBehaviour
 {
     [SerializeField] private float _speed;
     [SerializeField] private float _jumpForse;
+
+    private const string _triggerJump = "Jump";
+    private const string _triggerHit = "Hit";
+    private const string _triggerRun = "Run";
 
     private SpriteRenderer _spriteRenderer;
     private Animator _animator;
@@ -34,7 +39,7 @@ public class Movement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && _isGround)
             Jump();
 
-        if (Input.GetKeyUp(KeyCode.A) && Input.GetKey(KeyCode.D))
+        if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D))
             StopAnimationRun();
     }
 
@@ -56,13 +61,13 @@ public class Movement : MonoBehaviour
     public void PlayAnimationHit()
     {
         StopAnimationRun();
-        _animator.SetTrigger("Hit");
+        _animator.SetTrigger(_triggerHit);
     }
 
     private void Jump()
     {
             StopAnimationRun();
-            _animator.SetTrigger("Jump");
+            _animator.SetTrigger(_triggerJump);
             _rigidbody2D.AddForce(transform.up * _jumpForse, ForceMode2D.Impulse);
     }
 
@@ -75,7 +80,7 @@ public class Movement : MonoBehaviour
         }
         else
         {
-            _animator.SetBool("Run", true);
+            _animator.SetBool(_triggerRun, true);
             transform.Translate(speed * Time.deltaTime, 0, 0);
             _spriteRenderer.flipX = isRotatedAnimation;
         }
@@ -83,6 +88,6 @@ public class Movement : MonoBehaviour
 
     private void StopAnimationRun()
     {
-        _animator.SetBool("Run", false);
+        _animator.SetBool(_triggerRun, false);
     }
 }
