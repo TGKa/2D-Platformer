@@ -7,12 +7,12 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 public class Movement : MonoBehaviour
 {
-    [SerializeField] private float _speed;
-    [SerializeField] private float _jumpForse;
+    private const string TriggerJump = "Jump";
+    private const string TriggerHit = "Hit";
+    private const string TriggerRun = "Run";
 
-    private const string _triggerJump = "Jump";
-    private const string _triggerHit = "Hit";
-    private const string _triggerRun = "Run";
+    [SerializeField] private float _speed;
+    [SerializeField] private float _jumpForse;    
 
     private SpriteRenderer _spriteRenderer;
     private Animator _animator;
@@ -61,13 +61,13 @@ public class Movement : MonoBehaviour
     public void PlayAnimationHit()
     {
         StopAnimationRun();
-        _animator.SetTrigger(_triggerHit);
+        _animator.SetTrigger(TriggerHit);
     }
 
     private void Jump()
     {
             StopAnimationRun();
-            _animator.SetTrigger(_triggerJump);
+            _animator.SetTrigger(TriggerJump);
             _rigidbody2D.AddForce(transform.up * _jumpForse, ForceMode2D.Impulse);
     }
 
@@ -80,7 +80,7 @@ public class Movement : MonoBehaviour
         }
         else
         {
-            _animator.SetBool(_triggerRun, true);
+            _animator.SetBool(TriggerRun, true);
             transform.Translate(speed * Time.deltaTime, 0, 0);
             _spriteRenderer.flipX = isRotatedAnimation;
         }
@@ -88,6 +88,6 @@ public class Movement : MonoBehaviour
 
     private void StopAnimationRun()
     {
-        _animator.SetBool(_triggerRun, false);
+        _animator.SetBool(TriggerRun, false);
     }
 }

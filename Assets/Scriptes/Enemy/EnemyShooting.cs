@@ -5,11 +5,11 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class EnemyShooting : MonoBehaviour
 {
+    private const string TrigerAttack = "Attack";
+
     [SerializeField] private float _recharge;
     [SerializeField] private Transform _shootPoint;
-    [SerializeField] private Bullet _bullet;
-
-    private const string _trigerAttack = "Attack";
+    [SerializeField] private Bullet _bullet;    
 
     private Animator _animator;
     private Coroutine _shooting;
@@ -27,7 +27,7 @@ public class EnemyShooting : MonoBehaviour
 
         while (true)
         {
-            _animator.SetTrigger(_trigerAttack);
+            _animator.SetTrigger(TrigerAttack);
             Instantiate(_bullet, _shootPoint.position, Quaternion.identity);
 
             yield return recharge;

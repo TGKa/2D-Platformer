@@ -19,5 +19,13 @@ public class Player : MonoBehaviour
     {
         _health -= damage;
         _movement.PlayAnimationHit();
+
+        if (_health <= 0)
+            Die();
+    }
+
+    private void Die()
+    {
+        Destroy(gameObject);
     }
 }
